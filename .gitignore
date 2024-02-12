@@ -1,0 +1,4 @@
+mysql/*
+!mysql/.gitkeep
+
+node/node_modules

@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  proxy:
+    build: 
+      context: nginx
+    image: bsouto/fc-01-02-proxy
+    container_name: proxy
+    networks:
+      - node-network
+    volumes:
+      - ./nginx:/usr/share/nginx
+    tty: true
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: node
+    image: bsouto/fc-01-02-app
+    container_name: app
+    networks:
+      - node-network
+    volumes:
+      - ./node:/usr/src/app
+    tty: true
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  db:
+    platform: linux/x86_64
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    container_name: db
+    restart: always
+    tty: true
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - node-network
+
+networks:
+  node-network:
+    driver: bridge
