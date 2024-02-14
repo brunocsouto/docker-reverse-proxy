@@ -4,6 +4,8 @@ WORKDIR /usr/src/app
 
 COPY . .
 
+RUN npm install
+
 USER node
 
 EXPOSE 3000

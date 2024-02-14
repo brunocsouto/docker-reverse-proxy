@@ -17,6 +17,10 @@ app.get('/:name', (req, res) => {
   const connection = mysql.createConnection(config);
   const name = req.params.name;
 
+  connection.query(
+    `CREATE TABLE IF NOT EXISTS people(id int auto_increment, name varchar(255), primary key(id))`
+  );
+
   if (name) {
     const insertQuery = `INSERT INTO people(name) values('${name}')`;
     connection.query(insertQuery);
